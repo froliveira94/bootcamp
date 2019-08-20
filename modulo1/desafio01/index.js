@@ -4,7 +4,23 @@ const server = express();
 
 server.use(express.json());
 
+let numberOfRequests = 0;
 let projects = [{ id: "1", title: "Primeiro Projeto", tasks: [] }];
+
+server.use((req, res, next) => {
+  numberOfRequests = numberOfRequests + 1;
+  console.log(`Requisições realizadas: ${numberOfRequests}`);
+  next();
+});
+
+function checkIdExists(req, res, next) {
+  const { id } = req.params;
+  const project = projects.filter(item => item.id === id);
+  if (!project.length) {
+    return res.status(400).json({ error: "Project does not exists" });
+  }
+  return next();
+}
 
 server.get("/projects", (req, res) => {
   return res.json(projects);
@@ -19,7 +35,7 @@ server.post("/projects", (req, res) => {
   return res.json(projects);
 });
 
-server.post("/projects/:id/tasks", (req, res) => {
+server.post("/projects/:id/tasks", checkIdExists, (req, res) => {
   const { id } = req.params;
   const { title } = req.body;
   const newProjectsArray = projects.map(item => {
@@ -37,14 +53,14 @@ server.post("/projects/:id/tasks", (req, res) => {
   return res.json(projects);
 });
 
-server.delete("/projects/:id", (req, res) => {
+server.delete("/projects/:id", checkIdExists, (req, res) => {
   const { id } = req.params;
   const newProjectsArray = projects.filter(item => item.id !== id);
   projects = newProjectsArray;
   return res.json(projects);
 });
 
-server.put("/projects/:id", (req, res) => {
+server.put("/projects/:id", checkIdExists, (req, res) => {
   const { id } = req.params;
   const { title } = req.query;
   const newProjectArray = projects.map(item => {
