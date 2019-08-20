@@ -19,4 +19,20 @@ server.post("/projects", (req, res) => {
   return res.json(projects);
 });
 
+server.put("/projects/:id", (req, res) => {
+  const { id } = req.params;
+  const { title } = req.query;
+  const newProjectArray = projects.map(item => {
+    if (item.id !== id) {
+      return item;
+    }
+    return {
+      id,
+      title,
+      tasks: item.tasks
+    };
+  });
+  return res.json(newProjectArray);
+});
+
 server.listen(3000);
