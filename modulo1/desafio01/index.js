@@ -19,6 +19,24 @@ server.post("/projects", (req, res) => {
   return res.json(projects);
 });
 
+server.post("/projects/:id/tasks", (req, res) => {
+  const { id } = req.params;
+  const { title } = req.body;
+  const newProjectsArray = projects.map(item => {
+    let tasks = item.tasks;
+    if (item.id !== id) {
+      return item;
+    }
+    tasks.push(title);
+    return {
+      ...item,
+      tasks
+    };
+  });
+  projects = newProjectsArray;
+  return res.json(projects);
+});
+
 server.delete("/projects/:id", (req, res) => {
   const { id } = req.params;
   const newProjectsArray = projects.filter(item => item.id !== id);
@@ -39,7 +57,8 @@ server.put("/projects/:id", (req, res) => {
       tasks: item.tasks
     };
   });
-  return res.json(newProjectArray);
+  projects = newProjectArray;
+  return res.json(projects);
 });
 
 server.listen(3000);
