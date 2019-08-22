@@ -1,4 +1,4 @@
-# Conceitos
+# Anotações
 
 ## Docker
 
@@ -11,3 +11,9 @@
 - Container: é uma instância de uma imagem
 - Docker Registry (Docker Hub): Registro onde estão todas as imagens do Docker
 - Dockerfile: Define como a imagem da aplicação funciona em um ambiente novo
+
+### Criando ambiente
+
+```
+docker run --name database -e POSTGRES_PASSWORD=docker -p 5432:5432 -d postgres
+```
