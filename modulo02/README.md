@@ -53,14 +53,33 @@ docker run --name database -e POSTGRES_PASSWORD=docker -p 5432:5432 -d postgres
 - Sempre retorna um JSON
 - Não chama outro controller/método
 - Quando criar um novo controller:
-  - Apenas 5 métodos
-    ```
-    class UserController {
-      index() {} // Listagem de usuários
-      show() {} // Exibir um único usuário
-      store() {} // Cadastrar usuário
-      update() {} // Alterar usuário
-      delete() {} // Remover usuário
-    }
-    ```
-  - Estou falando da mesma entidade ?
+
+- Apenas 5 métodos
+  ```
+  class UserController {
+    index() {} // Listagem de usuários
+    show() {} // Exibir um único usuário
+    store() {} // Cadastrar usuário
+    update() {} // Alterar usuário
+    delete() {} // Remover usuário
+  }
+  ```
+- Estou falando da mesma entidade ?
+
+## Sequelize (ORM)
+
+- Cria Migrtion
+  ```
+  yarn sequelize migration:create --name=create-users
+  ```
+  ```
+  yarn sequelize db:migrate
+  ```
+- Desfaz a última migration
+  ```
+  yarn sequelize db:migrate:undo
+  ```
+- Desfaz todas as migrations
+  ```
+  yarn sequelize db:migrate:undo:all
+  ```
