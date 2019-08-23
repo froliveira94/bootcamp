@@ -83,3 +83,13 @@ docker run --name database -e POSTGRES_PASSWORD=docker -p 5432:5432 -d postgres
   ```
   yarn sequelize db:migrate:undo:all
   ```
+
+## Autenticação JWT (Json Web Token)
+
+```
+eyJhasygdaygsdyasnkdnjksnvjd.eyJudhsasndaskjdnajksnda.Sfdsudishdihdfusidhf
+```
+
+- Headers(tipo de token, algoritmo): eyJhasygdaygsdyasnkdnjksnvjd
+- Payload(dados adicionais ): eyJudhsasndaskjdnajksnda
+- Assinatura: Sfdsudishdihdfusidhf
