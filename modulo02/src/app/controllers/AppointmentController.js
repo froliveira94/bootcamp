@@ -1,8 +1,20 @@
 import * as Yup from 'yup';
-import { startOfHour, parseISO, isBefore } from 'date-fns';
+import {
+  startOfHour,
+  parseISO,
+  isBefore,
+  format,
+  subHours,
+  parse,
+  format
+} from 'date-fns';
+import pt from 'date-fns/locale/pt';
 import User from '../models/User';
 import File from '../models/File';
 import Appointment from '../models/Appointment';
+import Notication from '../schemas/Notification';
+
+import Mail from '../../lib/mail';
 
 class AppointmentController {
   async index(req, res) {
@@ -84,6 +96,57 @@ class AppointmentController {
       user_id: req.userId,
       provider_id,
       date,
+    });
+
+    /* Notify Appointment provider */
+
+    const user = await User.findByPk(req.userId);
+    const fromattedDate = format(
+      hourStart,
+      "'dia' dd 'de' MMMM', ás' H:mm'h'",
+      { locale: pt }
+    );
+
+    await Notication.create({
+      content: `Novo agendamento de ${user.name} para ${fromattedDate}`,
+      user: provider_id,
+    });
+
+    return res.json(appointment);
+  }
+
+  async delete(req, res) {
+    const appointment = await Appointment.findByPk(req.params.id, {
+      include: [
+        {
+          model: User,
+          as: 'provider',
+          attributes: ['name', 'email']
+        }
+      ]
+    });
+    if (appointment.user_id !== req.userId) {
+      return res.status(401).json({
+        error: "You don't have permission to cancel this appointment",
+      });
+    }
+
+    const dateWithSub = subHours(appointment.date, 2);
+
+    if (isBefore(dateWithSub, new Date())) {
+      return res
+        .status(401)
+        .json({ error: 'You can only cancel appointments 2 hours in advance' });
+    }
+
+    appointment.canceled_at = new Date().toJSON();
+
+    await appointment.save();
+
+    await Mail.sendMail({
+      to: `${appointment.provider.name} <${appointment.provider.email}>`,
+      subject: 'Agendamento cancelado',
+      text: 'Você tem um novo cancelamento'
     });
 
     return res.json(appointment);

@@ -93,3 +93,13 @@ eyJhasygdaygsdyasnkdnjksnvjd.eyJudhsasndaskjdnajksnda.Sfdsudishdihdfusidhf
 - Headers(tipo de token, algoritmo): eyJhasygdaygsdyasnkdnjksnvjd
 - Payload(dados adicionais ): eyJudhsasndaskjdnajksnda
 - Assinatura: Sfdsudishdihdfusidhf
+
+## Adicionando mongo DB
+
+```
+docker run --name mongobarber -p 27017:27017 -d -t mongo
+```
+
+## Envio de email
+
+- Amazon SAS em prod e Mailtrap em dev
