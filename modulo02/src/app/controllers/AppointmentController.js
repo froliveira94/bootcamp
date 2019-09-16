@@ -1,20 +1,13 @@
 import * as Yup from 'yup';
-import {
-  startOfHour,
-  parseISO,
-  isBefore,
-  format,
-  subHours,
-  parse,
-  format
-} from 'date-fns';
+import { startOfHour, parseISO, isBefore, format, subHours } from 'date-fns';
 import pt from 'date-fns/locale/pt';
 import User from '../models/User';
 import File from '../models/File';
 import Appointment from '../models/Appointment';
 import Notication from '../schemas/Notification';
 
-import Mail from '../../lib/mail';
+import CancellationMail from '../jobs/CancellationMail';
+import Queue from '../../lib/Queue';
 
 class AppointmentController {
   async index(req, res) {
@@ -121,14 +114,14 @@ class AppointmentController {
         {
           model: User,
           as: 'provider',
-          attributes: ['name', 'email']
+          attributes: ['name', 'email'],
         },
         {
           model: User,
           as: 'user',
-          attributes: ['name']
-        }
-      ]
+          attributes: ['name'],
+        },
+      ],
     });
     if (appointment.user_id !== req.userId) {
       return res.status(401).json({
@@ -148,20 +141,7 @@ class AppointmentController {
 
     await appointment.save();
 
-    await Mail.sendMail({
-      to: `${appointment.provider.name} <${appointment.provider.email}>`,
-      subject: 'Agendamento cancelado',
-      template: 'cancelation',
-      context: {
-        provider: appointment.provider.name,
-        user: appointment.user.name,
-        date: format(
-          appointment.date,
-          "'dia' dd 'de' MMMM', ás' H:mm'h'",
-          { locale: pt }
-        )
-      }
-    });
+    Queue.add(CancellationMail.key, { appointment });
 
     return res.json(appointment);
   }

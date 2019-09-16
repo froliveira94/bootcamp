@@ -103,3 +103,17 @@ docker run --name mongobarber -p 27017:27017 -d -t mongo
 ## Envio de email
 
 - Amazon SAS em prod e Mailtrap em dev
+
+## Filas ou background jobs
+
+- teve ser usando para configurar serviços que são executados em "segundo plano"
+
+## Redis
+
+```
+docker run --name redisbarber -p 6379:6379 -d -t redis:alpine
+```
+
+## bee-queue
+
+- Lib para controle de filas. Existe uma mais robusta caso necessário, que se chama Kue.
