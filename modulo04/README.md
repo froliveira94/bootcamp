@@ -71,3 +71,17 @@ function Badge({ num }) {
 O Webpack pega todo o céodigo javascript que o Babel compila e transoforma em um único código que é
 consumido pela aplicação
 ```
+
+## Ciclo de vida
+
+### ComponentDidMount()
+
+- Executado assim que o componente aparece em tela
+
+### ComponentDidUpdate(prevProps, prevState)
+
+- Executado sempre que houver alterações nas props ou estado
+
+### ComponentWillUnmount()
+
+- Executado sempre que o componente deixa de existir
