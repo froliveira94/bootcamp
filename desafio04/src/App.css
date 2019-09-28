@@ -1,7 +1,10 @@
-body {
-  box-sizing: border-box;
+* {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+}
+
+body {
   background-color: #ededed;
   font-family: Arial, Helvetica, sans-serif;
 }
@@ -10,10 +13,13 @@ body {
   height: 64px;
   background-color: #4a90e2;
   display: flex;
+  width: 100%;
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
   padding: 0 42px;
+  position: fixed;
+  top: 0;
 }
 
 #container {
@@ -21,6 +27,7 @@ body {
   flex-direction: column;
   align-items: center;
   padding: 20px 0;
+  margin-top: 64px;
 }
 
 #postlist {
@@ -31,14 +38,71 @@ body {
 
 #post {
   display: flex;
+  flex-direction: column;
   min-height: 250px;
   background-color: #fff;
   padding: 20px;
   margin-bottom: 20px;
 }
 
+#post .profile {
+  display: flex;
+}
+
 #post .profile img {
   width: 32px;
   height: 32px;
   border-radius: 50%;
+  margin-right: 10px;
+}
+
+.profile .profile-name p {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.profile .profile-name span {
+  font-size: 12px;
+  color: #c1c2c2;
+}
+
+.post-content {
+  margin: 20px 0;
+  padding-bottom: 30px;
+  border-bottom: 1px solid #efeeee;
+}
+
+.post-content p {
+  font-size: 14px;
+  color: #8a898a;
+}
+
+#comment {
+  display: flex;
+  flex-direction: row;
+}
+
+#comment img {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+#comment .content {
+  flex: 1;
+  border-radius: 28px;
+  padding: 10px 15px;
+  background-color: #efeeee;
+}
+
+#comment .content p {
+  line-height: 1.4;
+  font-size: 12px;
+  color: #464646;
+}
+
+#comment .content p > span {
+  font-weight: bold;
+  margin-right: 5px;
 }
