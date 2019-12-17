@@ -1,19 +1,23 @@
+import React from 'react';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 
-import Main from './pages/Main';
+import Header from './components/Header';
+import Home from './pages/Home';
+import Cart from './pages/Cart';
 
-const Routes = createAppContainer(
-  createStackNavigator(
-    {
-      Main,
+const ContentStack = createStackNavigator(
+  {
+    Home,
+    Cart,
+  },
+  {
+    defaultNavigationOptions: {
+      header: () => <Header />,
     },
-    {
-      defaultNavigationOptions: {
-        header: null,
-      },
-    }
-  )
+  }
 );
 
-export default Routes;
+const AppContainer = createAppContainer(ContentStack);
+
+export default AppContainer;
